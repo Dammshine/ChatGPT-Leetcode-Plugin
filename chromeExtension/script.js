@@ -4,3 +4,4 @@
  *   level: 'tags|hint|explaination',
  * }
  */
+// popup.js
