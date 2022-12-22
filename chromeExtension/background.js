@@ -18,7 +18,6 @@ chrome.runtime.onMessage.addListener(
 )
 
 function process_opnenai() {
-
   const openAiUrl = " url"
   const data = {
     "model":request.paragraph,
