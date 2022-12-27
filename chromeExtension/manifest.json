@@ -18,7 +18,7 @@
     "content_scripts": [
         {
           "matches": ["https://leetcode.com/questions/*"],
-          "js": ["contentScript.js"]
+          "js": ["script.js", "content.js"]
         }
     ],
     "permissions": [
