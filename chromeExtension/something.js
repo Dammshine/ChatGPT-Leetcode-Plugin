@@ -1,1 +1,0 @@
-// something.js processes the response from background.js and writes the comment in leetcode
