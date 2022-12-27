@@ -6,7 +6,7 @@ const question = document.querySelector('meta[name="description"]').content;
 chrome.storage.sync.set({ question: question });
 
 // M1: 
-// sends a message to background.js like ("transfer system")
+// sends a message to background.js like request[{'heading: done'}, {response: "(the leetcode question)"}]
 // onConnect() // finished with parsing the quesiton
 // send a message saying something done with scraping leetcode
 
