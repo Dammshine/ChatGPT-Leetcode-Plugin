@@ -1,11 +1,7 @@
 /**
  * Get the description of question on leetcode page
  */
-
-// var script = document.createElement('script');
-// script.src = 'https://code.jquery.com/jquery-3.6.0.min.js';
-// document.getElementsByTagName('head')[0].appendChild(script);
-
+ 
 const question = document.querySelector('meta[name="description"]').content;
 chrome.storage.sync.set({ question: question });
 
