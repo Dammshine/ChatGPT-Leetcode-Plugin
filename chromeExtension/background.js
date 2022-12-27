@@ -20,9 +20,31 @@ chrome.runtime.onMessage.addListener(
       // promises
       // if (api_key is invalid, then reject it and error message otherwise resole)
     }
+
     // send this response back to foreground.js
     //do chrome scripting in scipt.js
     // chrome.tabs.sendMessage()
+
+    const openai = " url"
+    // do a post request and get a response back from openai (hint)
+
+    // tabId is the unique identifier for the tab
+    console.log(tab.url);
+    if (leetcodeExp.test(tab.url) && changeInfo.status === "complete") {
+      // console.log("Check");
+      chrome.scripting
+        .executeScript({
+            target: {
+                tabId: tabId,
+            },
+            files: ["./foreground.js"], 
+      }).then((result) => {
+          console.log(`Parsed result ${JSON.stringify(result)}`);
+      });
+
+      // send this response back to the content.js 
+      // do chrome scripting in scipt.js
+    }
   }
 )
 
