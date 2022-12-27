@@ -36,3 +36,4 @@ full.addEventListener("click", function(event) {
 });
 
 // in background.js, if request.greeting == "_" ... 
+// then get the leetcode question and hint
