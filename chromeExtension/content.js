@@ -1,7 +1,7 @@
 /**
  * Get the description of question on leetcode page
  */
-
+ 
 const question = document.querySelector('meta[name="description"]').content;
 chrome.storage.sync.set({ question: question });
 
