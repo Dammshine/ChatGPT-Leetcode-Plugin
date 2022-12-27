@@ -25,12 +25,20 @@ chrome.runtime.onMessage.addListener(
     // chrome.tabs.sendMessage()
   }
 )
+
+function preprocess_question(paragraph) {
+  // if 
+  var question = paragraph.replace(/<[^>]*>/g, "");
+  question = question.replace('&nbsp;, ""');
+  return question;
+}
 // get hint from leetcode
 function getQuestion() {
   const domView = document.querySelector("._1l1MA");
   const elem = domView.getElementsByTagName('p');
+  const question = preprocess_question(elem[0].innerHTML);
   // first paragraph
-  return elem[0].innerHTML;
+  return question;
 }
 
 // do a post request and get a response back from openai (hint)
