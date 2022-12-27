@@ -31,11 +31,11 @@
         }
     ],
     "permissions": [
-      "tabs",
-      "storage",
-      "scripting"
+        "tabs",
+        "storage",
+        "scripting"
     ],
     "host_permissions": [
-      "https://leetcode.com/questions/*"
+        "https://leetcode.com/questions/*"
     ]
-  }
+}

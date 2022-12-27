@@ -12,11 +12,11 @@ chrome.tabs.onUpdated.addListener((tabId, changeInfo, tab) => {
   if (leetcodeExp.test(tab.url) && changeInfo.status === "complete") {
     // console.log("Check");
     chrome.scripting
-        .executeScript({
-            target: {
-                tabId: tabId,
-            },
-            files: ["./foreground.js"], 
+      .executeScript({
+          target: {
+              tabId: tabId,
+          },
+          files: ["./foreground.js"], 
     }).then((result) => {
         console.log(`Parsed result ${JSON.stringify(result)}`);
     });
