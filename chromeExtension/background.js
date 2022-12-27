@@ -1,11 +1,17 @@
 // chrome.runtime.message
 
-// Listen to the message from user clicking popup botton
-chrome.tabs.onUpdated.addListener((tabId, changeInfo, tab) => {
-  // Sending request to openAI (async)
-  // - Keep a state
-  // Update it on frontend
+// connect with the content.js page
+chrome.runtime.onMessage.addListener( 
+  function(request, response) {
+    if (request.heading == "something") {
+      // make a handler later on
+      const api_key = chrome.storage.sync.get('api_key');
+      // promises
+      // if (api_key is invalid, then reject it and error message otherwise resole)
+    }
 
+    const openai = " url"
+    // do a post request and get a response back from openai (hint)
 
   // tabId is the unique identifier for the tab
   console.log(tab.url);
@@ -21,6 +27,10 @@ chrome.tabs.onUpdated.addListener((tabId, changeInfo, tab) => {
         console.log(`Parsed result ${JSON.stringify(result)}`);
     });
 
+    // send this response back to the content.js 
+    //do chrome scripting in scipt.js
   }
-  console.log("Skip");
-});
+)
+
+
+
