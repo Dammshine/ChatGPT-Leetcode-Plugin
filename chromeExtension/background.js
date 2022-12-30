@@ -6,7 +6,7 @@ chrome.runtime.onMessage.addListener(
     console.log(request);
     // A hint request
     if (request['message_type'] !== undefined) {
-      console.log(request.tabId);
+      console.log(`tabId: ${request.tabId}`);
       // make a handler later on
       const api_key = await chrome.storage.sync.get('api_key');
       
@@ -62,9 +62,14 @@ function getQuestion() {
 */
 
 async function process_opnenai(api_key) {
-  leet_q = `Given an array of integers nums and an integer target, return indices of the two numbers such that they add up to target.
-  You may assume that each input would have exactly one solution, and you may not use the same element twice.
-  You can return the answer in any order.`;
+  let leet_q;
+  chrome.runtime.sendMessage('get-question', (response) => {
+    // get an asynchronous response with the data from the content.js
+    console.log('received question', response);
+    leet_q = response;
+  });
+
+  console.log(leet_q);
 
   const request_body = {
     "model": "text-davinci-edit-001",
