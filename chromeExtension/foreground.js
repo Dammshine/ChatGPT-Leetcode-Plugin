@@ -10,10 +10,9 @@ function checkAnswerExist() {
  *   ans: [string]
  * }
  */
-function hintStored() {
-  return {
-    ans: ["// Yep this is the hint!!"]
-  };
+async function hintStored() {
+  let ans = await chrome.storage.sync.get('hint');
+  return ans;
 }
 
 /**
@@ -68,13 +67,19 @@ function writeInBoxes(ans) {
   console.log(lineElements.item(3));
 }
 
+async function main() {
+  if (checkAnswerExist()) {
+    // get the hint from the storage
+    var hints = await hintStored();
+    console.log("Hint:" + hints);
+    console.log(hints['hint']['text']);
 
-if (checkAnswerExist()) {
-  // get the hint from the storage
-  let hints = hintStored();
-
-  // Then put it in
-  // Wow there is asynchronously involved very very sad
-  setTimeout(() => {  writeInBoxes(hints.ans); }, 2000);
+    // Then put it in
+    // Wow there is asynchronously involved very very sad
+    setTimeout(() => {  writeInBoxes([hints['hint']['text']]); }, 2000);
+  }
 }
+
+main();
+
 

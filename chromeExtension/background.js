@@ -27,7 +27,7 @@ chrome.runtime.onMessage.addListener(
           chrome.scripting
             .executeScript({
               target: {
-                tabId: tabId,
+                tabId: tabId.tabId,
               },
               files: ["./foreground.js"], 
           }).then((result) => {
