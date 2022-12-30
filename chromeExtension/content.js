@@ -5,17 +5,10 @@
 const question = document.querySelector('meta[name="description"]').content;
 chrome.storage.sync.set({ question: question });
 
-// M1: 
-// sends a message to background.js like request[{'heading: done'}, {response: "(the leetcode question)"}]
-// onConnect() // finished with parsing the quesiton
-// send a message saying something done with scraping leetcode
-
-// M2: background.js sends a message to content and content sends the question to background
-let myPort = browser.runtime.connect({name:"port-from-cs"});
-myPort.postMessage({greeting: "hello from content script"});
-
-myPort.onMessage.addListener((m) => {
-  console.log("In content script, received message from background script: ");
-  console.log(m.greeting);
-  myPort.postMessage({question: question});
+// background.js sends a message to content and content sends the question to background
+chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
+  // a page requests a hint, respond with a copy of the question
+  if (message === 'get-question') {
+      sendResponse(question);
+  }
 });
