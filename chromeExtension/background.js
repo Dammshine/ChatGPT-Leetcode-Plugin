@@ -21,7 +21,7 @@ chrome.runtime.onMessage.addListener(
         if (res.error !== undefined) {
           
         } else {
-          await chrome.storage.sync.set('hint', res['choices'][0]);
+          await chrome.storage.sync.set({'hint': res['choices'][0]});
           const tabId = await chrome.storage.sync.get('tabId');
 
           chrome.scripting
@@ -82,7 +82,6 @@ async function process_opnenai(api_key) {
       body: JSON.stringify(request_body)
     });
     return (await response).json();
-
   } catch (err) {
     console.log(err);
     return -1;
