@@ -12,6 +12,7 @@ submit.addEventListener("click", function(event) {
 function findTabId() {
     chrome.tabs.query({active: true}, function(tabs){
         console.log(tabs[0].id);
+        // if (tabs[0].url.contains == ...)
         return tabs[0].id;
     });
 }
@@ -23,7 +24,7 @@ const simple = document.getElementById('simple-button');
 simple.addEventListener("click", function(event) {
     event.preventDefault();
     console.log('simple hint button');
-    chrome.runtime.sendMessage({greeting: "simple", tabId: findTabId()});
+    chrome.runtime.sendMessage({message_type: "simple", tabId: findTabId()});
 });
 
 const medium = document.getElementById('medium-button');
@@ -31,7 +32,7 @@ const medium = document.getElementById('medium-button');
 medium.addEventListener("click", function(event) {
     event.preventDefault();
     console.log('medium hint button');
-    chrome.runtime.sendMessage({greeting: "medium", tabId: findTabId()});
+    chrome.runtime.sendMessage({message_type: "medium", tabId: findTabId()});
 });
 
 const full = document.getElementById('full-button');
@@ -39,8 +40,8 @@ const full = document.getElementById('full-button');
 full.addEventListener("click", function(event) {
     event.preventDefault();
     console.log('full hint button');
-    chrome.runtime.sendMessage({greeting: "full", tabId: findTabId()});
+    chrome.runtime.sendMessage({message_type: "full", tabId: findTabId()});
 });
 
-// in background.js, if request.greeting == "_" ... 
+// in background.js, if request.message_type == "_" ... 
 // then get the leetcode question and hint
