@@ -78,6 +78,7 @@ async function process_opnenai(api_key) {
         'Content-Type': 'application/json',
         'Authorization': `Bearer ${api_key}`,
       },
+      mode: 'cors',
       body: JSON.stringify(request_body)
     });
     return (await response).json;
