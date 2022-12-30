@@ -10,8 +10,13 @@ submit.addEventListener("click", function(event) {
 });
 
 function findTabId() {
+    // const gettingCurrent = browser.tabs.getCurrent();
     chrome.tabs.query({active: true}, function(tabs){
-        console.log(tabs[0].id);
+        if (tabs[0].url.includes('leetcode') !== true) {
+            console.error('wrong tab');
+        } else {
+            console.log(tabs[0].id);
+        }
         // if (tabs[0].url.contains == ...)
         return tabs[0].id;
     });
