@@ -6,7 +6,7 @@ submit.addEventListener("click", function(event) {
     event.preventDefault();
     const api_key = document.getElementById('apikey');
     console.log(api_key.value);
-    chrome.storage.sync.set({'api_key': api_key});
+    chrome.storage.sync.set({'api_key': api_key.value});
 });
 
 function findTabId() {
