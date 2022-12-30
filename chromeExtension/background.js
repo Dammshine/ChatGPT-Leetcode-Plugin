@@ -15,14 +15,25 @@ chrome.runtime.onMessage.addListener(
         console.error('Could not get API key');
       } else {
         // console.log(api_key);
+        const tabId = await chrome.storage.sync.get('tabId');
+        chrome.scripting
+          .executeScript({
+            target: {
+              tabId: tabId.tabId,
+            },
+            files: ["./content.js"], 
+        }).then((result) => {
+          console.log(`Parsed question ${JSON.stringify(result)}`);
+        });
+
         const res = await process_opnenai(api_key.api_key);
-        console.log(api_key);
+        console.log(res);
 
         if (res.error !== undefined) {
           
         } else {
           await chrome.storage.sync.set({'hint': res['choices'][0]});
-          const tabId = await chrome.storage.sync.get('tabId');
+          
 
           chrome.scripting
             .executeScript({
@@ -62,18 +73,12 @@ function getQuestion() {
 */
 
 async function process_opnenai(api_key) {
-  let leet_q;
-  chrome.runtime.sendMessage('get-question', (response) => {
-    // get an asynchronous response with the data from the content.js
-    console.log('received question', response);
-    leet_q = response;
-  });
-
+  let leet_q = await chrome.storage.sync.get('question');
   console.log(leet_q);
 
   const request_body = {
     "model": "text-davinci-edit-001",
-    "input": leet_q,
+    "input": leet_q.question,
     "instruction": "Give me an verbal answer"
   };
 
