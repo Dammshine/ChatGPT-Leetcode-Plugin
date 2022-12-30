@@ -16,9 +16,8 @@ function findTabId() {
             console.error('wrong tab');
         } else {
             console.log(tabs[0].id);
+            chrome.storage.sync.set({'tabId': tabs[0].id});
         }
-        // if (tabs[0].url.contains == ...)
-        return tabs[0].id;
     });
 }
 
@@ -29,7 +28,8 @@ const simple = document.getElementById('simple-button');
 simple.addEventListener("click", function(event) {
     event.preventDefault();
     console.log('simple hint button');
-    chrome.runtime.sendMessage({message_type: "simple", tabId: findTabId()});
+    findTabId();
+    chrome.runtime.sendMessage({message_type: "simple"});
 });
 
 const medium = document.getElementById('medium-button');
@@ -37,7 +37,8 @@ const medium = document.getElementById('medium-button');
 medium.addEventListener("click", function(event) {
     event.preventDefault();
     console.log('medium hint button');
-    chrome.runtime.sendMessage({message_type: "medium", tabId: findTabId()});
+    findTabId();
+    chrome.runtime.sendMessage({message_type: "medium"});
 });
 
 const full = document.getElementById('full-button');
@@ -45,7 +46,8 @@ const full = document.getElementById('full-button');
 full.addEventListener("click", function(event) {
     event.preventDefault();
     console.log('full hint button');
-    chrome.runtime.sendMessage({message_type: "full", tabId: findTabId()});
+    findTabId();
+    chrome.runtime.sendMessage({message_type: "full"});
 });
 
 // in background.js, if request.message_type == "_" ... 

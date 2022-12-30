@@ -22,11 +22,12 @@ chrome.runtime.onMessage.addListener(
           
         } else {
           await chrome.storage.sync.set('hint', res['choices'][0]);
+          const tabId = await chrome.storage.sync.get('tabId');
 
           chrome.scripting
             .executeScript({
               target: {
-                tabId: request.tabId,
+                tabId: tabId,
               },
               files: ["./foreground.js"], 
           }).then((result) => {
