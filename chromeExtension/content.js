@@ -4,6 +4,7 @@
  
 const question = document.querySelector('meta[name="description"]').content;
 chrome.storage.sync.set({ question: question });
+console.log(api_key = chrome.storage.sync.get('api_key'));
 
 // M1: 
 // sends a message to background.js like request[{'heading: done'}, {response: "(the leetcode question)"}]

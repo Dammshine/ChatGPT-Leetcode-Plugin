@@ -25,7 +25,6 @@ chrome.runtime.onMessage.addListener(
     //do chrome scripting in scipt.js
     // chrome.tabs.sendMessage()
 
-    const openai = " url"
     // do a post request and get a response back from openai (hint)
 
     // tabId is the unique identifier for the tab
@@ -63,6 +62,8 @@ function getQuestion() {
 // do a post request and get a response back from openai (hint)
 async function process_opnenai(api_key) {
   leet_q = getQuestion();
+  console.log(leet_q);
+  console.log("api_key: " + api_key);
 
   const request_body = {
     "model": "text-davinci:003",
@@ -71,7 +72,7 @@ async function process_opnenai(api_key) {
   };
 
   try {
-    const response = fetch(url, {
+    const response = fetch(openAiUrl, {
       method: 'POST', 
       headers: {
         'Content-Type': 'application/json',
