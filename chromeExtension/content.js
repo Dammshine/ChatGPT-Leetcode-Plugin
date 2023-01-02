@@ -7,6 +7,7 @@ function preprocess_question(paragraph) {
   question = question.replace('&nbsp;, ""');
   return question;
 }
+
 // get hint from leetcode
 function getQuestion() {
   const domView = document.querySelector("._1l1MA");

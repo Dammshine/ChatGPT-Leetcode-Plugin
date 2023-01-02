@@ -16,14 +16,12 @@ chrome.runtime.onMessage.addListener(
       } else {
         // console.log(api_key);
         const tabId = await chrome.storage.sync.get('tabId');
-        chrome.scripting
+        await chrome.scripting
           .executeScript({
             target: {
               tabId: tabId.tabId,
             },
             files: ["./content.js"], 
-        }).then((result) => {
-          console.log(`Parsed question ${JSON.stringify(result)}`);
         });
 
         const res = await process_opnenai(api_key.api_key);
@@ -74,7 +72,7 @@ function getQuestion() {
 
 async function process_opnenai(api_key) {
   let leet_q = await chrome.storage.sync.get('question');
-  console.log(leet_q);
+  console.log({"leet_q": leet_q});
 
   const request_body = {
     "model": "text-davinci-edit-001",
