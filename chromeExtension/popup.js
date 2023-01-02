@@ -11,13 +11,14 @@ submit.addEventListener("click", function(event) {
 
 function findTabId() {
     // const gettingCurrent = browser.tabs.getCurrent();
-    chrome.tabs.query({active: true}, function(tabs){
-        if (tabs[0].url.includes('leetcode') !== true) {
+    chrome.tabs.query({active: true, lastFocusedWindow: true }, function(tab){
+        if (tab.url.includes('leetcode') !== true) {
             console.error('wrong tab');
         } else {
-            console.log(tabs[0].id);
-            chrome.storage.sync.set({'tabId': tabs[0].id});
+            console.log(tab.id);
+            chrome.storage.sync.set({'tabId': tab.id});
         }
+        chrome.storage.sync.set({'tabId': tab.id});
     });
 }
 

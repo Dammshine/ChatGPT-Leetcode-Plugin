@@ -67,16 +67,62 @@ function writeInBoxes(ans) {
   console.log(lineElements.item(3));
 }
 
+function processLine(line, limit) {
+  let words = line.split(' ');
+  let ret = [];
+  let currStr = "";
+  for (let word of words) {
+    if (currStr.length + word.length > limit) {
+      ret.push(currStr);
+      currStr = word;
+    } else {
+      currStr += " " + word;
+    }
+  }
+  if (currStr.length > 0) {
+    ret.push(currStr);
+  }
+  
+  return ret;
+}
+
+/**
+ * Convert a string to a array of elements
+ */
+function processHint(hint) {
+  // Break the string by line
+  let hints = hint.split('\n');
+
+  let retHints = [];
+  for (let h of hints) {
+    // Check the length
+    let lines = processLine(h, 50);
+    for (let line of lines) {
+      retHints.push(line);
+    }
+    // For line break, add a whole break
+    retHints.push("");
+  }
+  return retHints;
+}
+
 async function main() {
   if (checkAnswerExist()) {
     // get the hint from the storage
     var hints = await hintStored();
-    console.log("Hint:" + hints);
-    console.log(hints['hint']['text']);
-
+    
     // Then put it in
     // Wow there is asynchronously involved very very sad
-    setTimeout(() => {  writeInBoxes([hints['hint']['text']]); }, 2000);
+    setTimeout(() => {  
+      console.log(hints);
+      var hint = hints['hint']['text'];
+      var processedHint = processHint(hint);
+      console.log("Here");
+      // console.log(processedHint);
+      chrome.storage.sync.set({'ProcessedHint': processedHint})
+
+      writeInBoxes(processedHint); 
+    }, 2000);
   }
 }
 

@@ -12,7 +12,12 @@ function preprocess_question(paragraph) {
 function getQuestion() {
   const domView = document.querySelector("._1l1MA");
   const elem = domView.getElementsByTagName('p');
-  const question = preprocess_question(elem[0].innerHTML);
+  let question = "";
+  for (let i = 0; i < elem.length; i++) {
+    question += preprocess_question(elem[i].innerHTML);
+    question += "\n";
+  }
+
   // first paragraph
   return question;
 }

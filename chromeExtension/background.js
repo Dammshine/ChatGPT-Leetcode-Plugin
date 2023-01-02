@@ -6,7 +6,6 @@ chrome.runtime.onMessage.addListener(
     console.log(request);
     // A hint request
     if (request['message_type'] !== undefined) {
-      console.log(`tabId: ${request.tabId}`);
       // make a handler later on
       const api_key = await chrome.storage.sync.get('api_key');
       
@@ -16,6 +15,12 @@ chrome.runtime.onMessage.addListener(
       } else {
         // console.log(api_key);
         const tabId = await chrome.storage.sync.get('tabId');
+        console.log(tabId);
+        if (tabId.tabId === undefined) {
+          console.error("Unable to get tabID");
+          return;
+        }
+
         await chrome.scripting
           .executeScript({
             target: {
@@ -52,32 +57,18 @@ chrome.runtime.onMessage.addListener(
   }
 )
 
-/*function preprocess_question(paragraph) {
-  // if 
-  var question = paragraph.replace(/<[^>]*>/g, "");
-  question = question.replace('&nbsp;, ""');
-  return question;
+function hintFormatEasy() {
+  return "\n\n Give two possible question tags and a line of explanation:";
 }
-// get hint from leetcode
-function getQuestion() {
-  const domView = document.querySelector("._1l1MA");
-  const elem = domView.getElementsByTagName('p');
-  const question = preprocess_question(elem[0].innerHTML);
-  // first paragraph
-  return question;
-}
-
-// do a post request and get a response back from openai (hint)
-*/
 
 async function process_opnenai(api_key) {
   let leet_q = await chrome.storage.sync.get('question');
   console.log({"leet_q": leet_q});
 
   const request_body = {
-    "model": "text-davinci-edit-001",
-    "input": leet_q.question,
-    "instruction": "Give me an verbal answer"
+    "model": "text-davinc-001",
+    "input": leet_q.question + hintFormatEasy(),
+    "instruction": "Give me a verbal answer"
   };
 
   try {
