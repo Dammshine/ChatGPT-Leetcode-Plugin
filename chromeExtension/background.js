@@ -1,5 +1,5 @@
 // connect with the content.js page
-const openAiUrl = 'https://api.openai.com/v1/edits'
+const openAiUrl = 'https://api.openai.com/v1/completions'
 
 chrome.runtime.onMessage.addListener( 
   async function(request) {
@@ -58,7 +58,15 @@ chrome.runtime.onMessage.addListener(
 )
 
 function hintFormatEasy() {
+  return "\n\n Give two possible question tags:";
+}
+
+function hintFormatMedium() {
   return "\n\n Give two possible question tags and a line of explanation:";
+}
+
+function hintFormatHard() {
+  return "\n\n Write psueodocode for this question with comment:";
 }
 
 async function process_opnenai(api_key) {
@@ -66,9 +74,14 @@ async function process_opnenai(api_key) {
   console.log({"leet_q": leet_q});
 
   const request_body = {
-    "model": "text-davinc-001",
-    "input": leet_q.question + hintFormatEasy(),
-    "instruction": "Give me a verbal answer"
+    "model": "text-davinci-003",
+    "prompt": leet_q.question + hintFormatEasy(),
+    "max_tokens": 2048,
+    "temperature": 0,
+    "top_p": 1,
+    "n": 1,
+    "stream": false,
+    "logprobs": null
   };
 
   try {
