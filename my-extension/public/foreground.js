@@ -22,10 +22,14 @@ function validUrl(url) {
   return /^https:\/\/leetcode.com\/problems\/.+/.test(url);
 }
 
+async function sleep(ms) {
+  return new Promise(resolve => setTimeout(resolve, ms));
+}
+
 /**
  * Write hint in code boxes
  */
-function writeInBoxes(ans) {
+async function writeInBoxes(ans) {
   // Find the dom element
   const domViewLine = document.querySelector(".view-lines")
   if (!domViewLine) {
@@ -33,7 +37,7 @@ function writeInBoxes(ans) {
   }
 
   const lineElements = domViewLine.children;
-
+  
   // A wise idea would be insert at the end
   // A good question would be how to do so????
   // Obviously I need the 
@@ -46,8 +50,11 @@ function writeInBoxes(ans) {
     
 
     let spanEle = document.createElement("span");
+    divEle.appendChild(spanEle);
+    domViewLine.appendChild(divEle)
     // Break sentence into words
     let words = sentence.split(" ");
+    // console.log(words);
     for (let word of words) {
       let wordEle = document.createElement("span");
       wordEle.className = 'mtk3';
@@ -58,12 +65,11 @@ function writeInBoxes(ans) {
       wordEle.className = 'mtk1';
       wordEle.innerText = ' ';
       spanEle.appendChild(wordEle);
-    }
 
-    divEle.appendChild(spanEle);
+      // console.log("wait for 0.15 second...");
+      await sleep(150);
+    }
     height += 18;
-    domViewLine.appendChild(divEle)
-    console.log(divEle);
   }
   console.log(lineElements.item(3));
 }
@@ -97,14 +103,22 @@ function processHint(hint) {
   let retHints = [];
   for (let h of hints) {
     // Check the length
-    let lines = processLine(h, 50);
+    let lines = processLine(h, 60);
     for (let line of lines) {
       retHints.push(line);
     }
+
     // For line break, add a whole break
     retHints.push("");
   }
-  return retHints;
+
+  // Before return filter further
+  let idx = 0;
+  for (let i = 0; i < retHints.length; i++) {
+    if (retHints[i].trim().length === 0) idx = i;
+    else break;
+  }
+  return retHints.slice(idx);
 }
 
 async function main() {
@@ -114,15 +128,16 @@ async function main() {
     
     // Then put it in
     // Wow there is asynchronously involved very very sad
-    setTimeout(() => {  
+    setTimeout(async () => {  
       console.log(hints);
       var hint = hints['hint']['text'];
       var processedHint = processHint(hint);
-      console.log("Here");
+      console.log("Process hint: " + processedHint);
+
       // console.log(processedHint);
       chrome.storage.sync.set({'ProcessedHint': processedHint})
 
-      writeInBoxes(processedHint); 
+      await writeInBoxes(processedHint); 
     }, 2000);
   }
 }
