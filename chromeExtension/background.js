@@ -1,12 +1,11 @@
 // connect with the content.js page
-const openAiUrl = 'https://api.openai.com/v1/edits'
+const openAiUrl = 'https://api.openai.com/v1/completions'
 
 chrome.runtime.onMessage.addListener( 
   async function(request) {
     console.log(request);
     // A hint request
     if (request['message_type'] !== undefined) {
-      console.log(`tabId: ${request.tabId}`);
       // make a handler later on
       const api_key = await chrome.storage.sync.get('api_key');
       
@@ -15,14 +14,29 @@ chrome.runtime.onMessage.addListener(
         console.error('Could not get API key');
       } else {
         // console.log(api_key);
+        const tabId = await chrome.storage.sync.get('tabId');
+        console.log(tabId);
+        if (tabId.tabId === undefined) {
+          console.error("Unable to get tabID");
+          return;
+        }
+
+        await chrome.scripting
+          .executeScript({
+            target: {
+              tabId: tabId.tabId,
+            },
+            files: ["./content.js"], 
+        });
+
         const res = await process_opnenai(api_key.api_key);
-        console.log(api_key);
+        console.log(res);
 
         if (res.error !== undefined) {
           
         } else {
           await chrome.storage.sync.set({'hint': res['choices'][0]});
-          const tabId = await chrome.storage.sync.get('tabId');
+          
 
           chrome.scripting
             .executeScript({
@@ -43,38 +57,31 @@ chrome.runtime.onMessage.addListener(
   }
 )
 
-/*function preprocess_question(paragraph) {
-  // if 
-  var question = paragraph.replace(/<[^>]*>/g, "");
-  question = question.replace('&nbsp;, ""');
-  return question;
-}
-// get hint from leetcode
-function getQuestion() {
-  const domView = document.querySelector("._1l1MA");
-  const elem = domView.getElementsByTagName('p');
-  const question = preprocess_question(elem[0].innerHTML);
-  // first paragraph
-  return question;
+function hintFormatEasy() {
+  return "\n\n Give two possible question tags:";
 }
 
-// do a post request and get a response back from openai (hint)
-*/
+function hintFormatMedium() {
+  return "\n\n Give two possible question tags and a line of explanation:";
+}
+
+function hintFormatHard() {
+  return "\n\n Write psueodocode for this question with comment:";
+}
 
 async function process_opnenai(api_key) {
-  let leet_q;
-  chrome.runtime.sendMessage('get-question', (response) => {
-    // get an asynchronous response with the data from the content.js
-    console.log('received question', response);
-    leet_q = response;
-  });
-
-  console.log(leet_q);
+  let leet_q = await chrome.storage.sync.get('question');
+  console.log({"leet_q": leet_q});
 
   const request_body = {
-    "model": "text-davinci-edit-001",
-    "input": leet_q,
-    "instruction": "Give me an verbal answer"
+    "model": "text-davinci-003",
+    "prompt": leet_q.question + hintFormatEasy(),
+    "max_tokens": 2048,
+    "temperature": 0,
+    "top_p": 1,
+    "n": 1,
+    "stream": false,
+    "logprobs": null
   };
 
   try {

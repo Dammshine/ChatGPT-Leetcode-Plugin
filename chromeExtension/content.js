@@ -1,14 +1,26 @@
 /**
  * Get the description of question on leetcode page
- */
- 
-const question = document.querySelector('meta[name="description"]').content;
-chrome.storage.sync.set({ question: question });
+ */ 
+function preprocess_question(paragraph) {
+  // if 
+  var question = paragraph.replace(/<[^>]*>/g, "");
+  question = question.replace('&nbsp;, ""');
+  return question;
+}
 
-// background.js sends a message to content and content sends the question to background
-chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
-  // a page requests a hint, respond with a copy of the question
-  if (message === 'get-question') {
-      sendResponse(question);
+// get hint from leetcode
+function getQuestion() {
+  const domView = document.querySelector("._1l1MA");
+  const elem = domView.getElementsByTagName('p');
+  let question = "";
+  for (let i = 0; i < elem.length; i++) {
+    question += preprocess_question(elem[i].innerHTML);
+    question += "\n";
   }
-});
+
+  // first paragraph
+  return question;
+}
+
+// const question = document.querySelector('meta[name="description"]').content;
+chrome.storage.sync.set({ 'question': getQuestion() });
