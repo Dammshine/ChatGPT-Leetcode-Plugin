@@ -42,6 +42,7 @@ function writeInBoxes(ans) {
     let divEle = document.createElement("div");
     divEle.style = `top:${height}px;height:18px;`;
     divEle.className = `view-line`;
+    divEle.dir = "auto";
     
 
     let spanEle = document.createElement("span");

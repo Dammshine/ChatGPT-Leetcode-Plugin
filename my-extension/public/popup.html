@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <!--<link rel="stylesheet" type="text/css" href="bootstrap-4.3.1-dist/css/bootstrap.min.css">
+    <script type="text/javascript" src="bootstrap-4.3.1-dist/js/bootstrap.min.js"></script>-->
+    
+  </head>
+  <body>
+    <form>
+        <div class="mb-3">
+          <label for="api-key" class="form-label">API Key</label>
+          <input type="text" class="form-control" id="apikey" aria-describedby="api-key">
+          <div id="key-text" class="form-text">Insert API Key for openAI.</div>
+            
+          <button id="submit-button" type="submit" class="btn btn-primary">Submit</button>
+        </div>
+        <div class="mb-3">
+            <label for="hints" class="form-label">Select Hint Level</label>
+            <br>
+            <button id="simple-button" type="submit" class="btn btn-primary">Simple</button>
+            <button id="medium-button" type="submit" class="btn btn-primary">Medium</button>
+            <button id="full-button" type="submit" class="btn btn-primary"> Full </button>
+        </div>
+      </form>
+    <script src="popup.js"></script>
+  </body>
+</html>

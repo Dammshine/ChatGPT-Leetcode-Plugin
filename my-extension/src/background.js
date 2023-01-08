@@ -1,3 +1,10 @@
+'use strict';
+
+// With background scripts you can communicate with popup
+// and contentScript files.
+// For more information on background script,
+// See https://developer.chrome.com/extensions/background_pages
+
 // connect with the content.js page
 const openAiUrl = 'https://api.openai.com/v1/completions'
 
@@ -69,13 +76,17 @@ function hintFormatHard() {
   return "\n\n Write psueodocode for this question with comment:";
 }
 
+function hintTroll() {
+  return "\n\n Rewrite the question by a story involve bob and alice:";
+}
+
 async function process_opnenai(api_key) {
   let leet_q = await chrome.storage.sync.get('question');
   console.log({"leet_q": leet_q});
 
   const request_body = {
     "model": "text-davinci-003",
-    "prompt": leet_q.question + hintFormatEasy(),
+    "prompt": leet_q.question + hintTroll(),
     "max_tokens": 2048,
     "temperature": 0,
     "top_p": 1,
